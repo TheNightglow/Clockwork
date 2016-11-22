@@ -7,6 +7,7 @@ namespace Clockwork
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
+    /// hi
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
