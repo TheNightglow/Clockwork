@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Drawing;
+
 
 namespace Clockwork
 {
@@ -8,14 +10,32 @@ namespace Clockwork
     /// This is the main type for your game.
     /// </summary>
     /// hi
-    public class Game1 : Game
+    public class Game1 : Basics
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Texture2D background;
+        public Texture2D foreground;
+        //     Bitmap blueprint = new Bitmap(@"C:\Users\Marcu\Desktop\Clockwork\Clockwork\Clockwork\Clockwork\bin\Blueprint.png");
+
+
+
+
+        //Class Member
+        Player player;
+        Vector2 start = new Vector2(20, 770);
+        public Vector2 fore = new Vector2(0, 0);
+
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            //Window SIze
+            graphics.PreferredBackBufferWidth = 400; 
+            graphics.PreferredBackBufferHeight = 800;  
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -40,6 +60,15 @@ namespace Clockwork
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            background = this.Content.Load<Texture2D>("ConzMap");
+            foreground = this.Content.Load<Texture2D>("ConzFore");
+
+
+
+            player = new Player(Content.Load<Texture2D>("Grass"), start);
+
+
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -51,6 +80,7 @@ namespace Clockwork
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            Content.Unload();
         }
 
         /// <summary>
@@ -63,6 +93,9 @@ namespace Clockwork
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            player.Update();
+
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -74,9 +107,17 @@ namespace Clockwork
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, Vector2.Zero);
+            player.Draw(spriteBatch);
+
+            spriteBatch.Draw(foreground, Vector2.Zero);
+
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
