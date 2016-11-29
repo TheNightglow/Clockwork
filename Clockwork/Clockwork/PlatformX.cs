@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Clockwork
 {
-    class PlatformX
+    class PlatformX : Basics
     {
         /*
          *gebraucht wird:
