@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Basics.cs" />
+    <Compile Include="Decal.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="PlatformX.cs" />
     <Compile Include="Player.cs" />
@@ -64,6 +65,10 @@
     <None Include="bin\Debug\BP.png" />
     <None Include="bin\Debug\ConzFore.png" />
     <None Include="bin\Debug\ConzMap.png" />
+    <None Include="bin\Debug\back.png" />
+    <None Include="bin\Debug\front.png" />
+    <None Include="bin\Debug\NBP.png" />
+    <None Include="bin\Debug\BPD.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

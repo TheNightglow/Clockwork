@@ -63,6 +63,16 @@ namespace Clockwork.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap back {
+            get {
+                object obj = ResourceManager.GetObject("back", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Blueprint {
             get {
                 object obj = ResourceManager.GetObject("Blueprint", resourceCulture);
@@ -83,6 +93,16 @@ namespace Clockwork.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BPD {
+            get {
+                object obj = ResourceManager.GetObject("BPD", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ConzFore {
             get {
                 object obj = ResourceManager.GetObject("ConzFore", resourceCulture);
@@ -96,6 +116,26 @@ namespace Clockwork.Properties {
         internal static System.Drawing.Bitmap ConzMap {
             get {
                 object obj = ResourceManager.GetObject("ConzMap", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap front {
+            get {
+                object obj = ResourceManager.GetObject("front", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NBP {
+            get {
+                object obj = ResourceManager.GetObject("NBP", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

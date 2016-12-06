@@ -12,21 +12,21 @@ namespace Clockwork
 {
     public class Basics : Game
     {
-        public int MapsizeX = 400;
+        public int MapsizeX = 500;
         public int MapsizeY = 800;
-        Bitmap blueprint = new Bitmap(Clockwork.Properties.Resources.BP);
+        Bitmap blueprint = new Bitmap(Clockwork.Properties.Resources.BPD);
         public bool CollisionY(Vector2 location, int direct, int SizeY) //positiv direct for downwards movement, negative for upwards!
         {
             if (direct > 0)
             {
-                 if (blueprint.GetPixel((int)location.X, (int)location.Y + direct + SizeY).Equals(blueprint.GetPixel(1, 1)))
+                if (blueprint.GetPixel((int)location.X, (int)location.Y + direct + SizeY +MapsizeY).Equals(blueprint.GetPixel(1, 1)))
                 {
                     return true;
                 }
             }
             else
             {
-                if (blueprint.GetPixel((int)location.X, (int)location.Y + direct).Equals(blueprint.GetPixel(1, 1)))
+                if (blueprint.GetPixel((int)location.X, (int)location.Y + direct + MapsizeY).Equals(blueprint.GetPixel(1, 1)))
                 {
                     return true;
                 }
@@ -38,14 +38,14 @@ namespace Clockwork
         {
             if (direct >= 0)
             {
-                if (blueprint.GetPixel((int)location.X + direct+SizeX, (int)location.Y).Equals(blueprint.GetPixel(1, 1)))
+                if (blueprint.GetPixel((int)location.X + direct + SizeX, (int)location.Y + MapsizeY).Equals(blueprint.GetPixel(1, 1)))
                 {
                     return true;
                 }
             }
             else
             {
-                if (blueprint.GetPixel((int)location.X + direct, (int)location.Y).Equals(blueprint.GetPixel(1, 1)))
+                if (blueprint.GetPixel((int)location.X + direct, (int)location.Y + MapsizeY).Equals(blueprint.GetPixel(1, 1)))
                 {
                     return true;
                 }
@@ -53,21 +53,20 @@ namespace Clockwork
             return false;
         }
 
-        /*
+        
         // Vergleicht ob Spieler auf Platform fällt
-        public bool IsElementOf(Vector2 pos, PlatformX platform)
+        public bool IsElementOf(Vector2 player, Vector2 plat)
         {
-            for(int x = platform.location.X; x<= platform.location.X+platform.SizeX;x++)
+            if((player.Y+60)>plat.Y-2 && (player.Y+60) < plat.Y + 2)
             {
-                for (int y = platform.location.Y; x <= platform.location.Y + platform.SizeY; x++)
+                if (player.X >= plat.X && player.X < plat.Y + 106)
                 {
-                    if(new Vector2(pos.X, pos.Y+1).Equals(new Vector2(x,y)))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
+            //if(pos.Y>348 && pos.Y<352) return true;
             return false;
         }
-        */
+        
+    }
 }
