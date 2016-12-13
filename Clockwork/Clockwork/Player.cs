@@ -14,9 +14,12 @@ namespace Clockwork
         bool jump = false;
         Texture2D texture;
         public Vector2 position;
-        public int playerSizeX = 60;
-        public int playerSizeY = 70;
+        Texture2D winP;
+        Texture2D deathP;
+        Texture2D empt;
+
         Vector2 move;
+        public Vector2[] platVarray;
         float gForce = 0.3f;
 
         public int scrollHeight(Decal decal)
@@ -27,43 +30,55 @@ namespace Clockwork
         }
 
         //Constructor
-        public Player(Texture2D playerTexture, Vector2 playerPosition)
+        public Player(Texture2D playerTexture, Vector2 playerPosition, Texture2D empt, Texture2D Dmsg, Texture2D Wmsg)
         {
             //Define CLass Member
             texture = playerTexture;
             position = playerPosition;
             move = Vector2.Zero;
+            winP = Wmsg;
+            deathP = Dmsg;
+            this.empt = empt;
+            Message = empt;
         }
 
-        public void Kill(Decal decal, PlatformX plat)
+        public void Kill(Decal decal, PlatformX plat, Enemys e)
         {
             position = start;
             decal.position = new Vector2(0, 0 - MapsizeY);
             plat.position = plat.spawn;
+            e.position = e.spawn;
+            Message = deathP;
         }
 
-        public void Update(Decal decal, PlatformX plat)
+        public void Update(Decal decal, PlatformX[] platarray, Enemys enemy)
         {
+
+
             KeyboardState key = Keyboard.GetState();
 
             Vector2 scrollPos = new Vector2(position.X, position.Y - scrollHeight(decal));
             move.Y += gForce;
             move.X = 0;
 
-            if (key.IsKeyDown(Keys.Left))
+            //Win
+            if (blueprint.GetPixel((int)scrollPos.X, (int)scrollPos.Y + playerSizeY + MapsizeY).Equals(blueprint.GetPixel(3, 30))) // 3 30 is Green!
             {
-                if(CollisionX(scrollPos,-2, playerSizeX) ==false)
-                    move.X -= 2;
+                Kill(decal, platarray[0], enemy);
+                platarray[1].position = platarray[1].spawn;
+                Message = winP;
             }
 
-
-            if (key.IsKeyDown(Keys.Right))
+            if ((position.Y + 58) > enemy.position.Y - 5 && (position.Y + 60) < enemy.position.Y + 5)
             {
-                if (CollisionX(scrollPos, 2, playerSizeX) == false)
-                    move.X += 2;
+                if (position.X + 25 >= enemy.position.X && position.X < enemy.position.X + playerSizeX - 25)
+                {
+                    Kill(decal, platarray[0], enemy);
+                    platarray[1].position = platarray[1].spawn;
+                }
             }
 
-            if (key.IsKeyDown(Keys.A))
+            if (key.IsKeyDown(Keys.A)|| key.IsKeyDown(Keys.Left))
             {
                 if (CollisionX(scrollPos, -2, playerSizeX) == false)
                 {
@@ -72,14 +87,19 @@ namespace Clockwork
 
             }
 
-            if (key.IsKeyDown(Keys.D))
+            if (key.IsKeyDown(Keys.D)|| key.IsKeyDown(Keys.Right))
             {
                 if (CollisionX(scrollPos, 2, playerSizeX) == false)
                     move.X += 2;
+                Message = empt;
             }
 
             //Jump
-            if (key.IsKeyDown(Keys.Space)&& !jump)
+            for (int i = 0; i < platarray.Length; i++)
+            {
+                PlatformX plat = platarray[i];
+            }
+            if ((key.IsKeyDown(Keys.Space)|| key.IsKeyDown(Keys.W)|| key.IsKeyDown(Keys.Up)) && !jump)
             {
                 jump = true;
                 move.Y = -8;
@@ -87,15 +107,26 @@ namespace Clockwork
             }
             if(position.Y >= (MapsizeY - playerSizeY))
             {
-                Kill(decal, plat);
+                for (int i = 0; i < platarray.Length; i++)
+                {
+                    PlatformX plat = platarray[i];
+                    Kill(decal, plat, enemy);
+                }
+
             }
 
+            //Array of Platform Positions
+            for (int i = 0; i < platarray.Length; i++)
+            {
+                platVarray = new Vector2[platarray.Length];
+                platVarray[i] = platarray[i].position;
+            }
             if ((CollisionY(scrollPos, 1, playerSizeY)
-                || CollisionY(new Vector2(position.X + playerSizeX, scrollPos.Y), 1, playerSizeY) || IsElementOf(this.position, plat.position)) == false)
+                || CollisionY(new Vector2(position.X + playerSizeX, scrollPos.Y), 1, playerSizeY) || IsElementOf(this.position, platVarray)) == false)
             {
                 if (move.Y < 0)
                 {
-                    if (CollisionY(scrollPos, -1, playerSizeY) == false && || IsElementOf(this.position, plat.position)==false)
+                    if (CollisionY(scrollPos, -1, playerSizeY) == false && IsElementOf(this.position, platVarray) ==false)
                     {
                         position.Y += move.Y;
                     }
@@ -117,21 +148,39 @@ namespace Clockwork
             position.X += move.X;
 
             //Location Correction
+
             if(!jump)
             {
-                while(CollisionY(new Vector2(position.X, position.Y - scrollHeight(decal)), 0, playerSizeY-1) || IsElementOf(this.position, plat.position))
+                while(CollisionY(new Vector2(position.X, position.Y - scrollHeight(decal)), 0, playerSizeY-1) && IsElementOf(this.position, platVarray))
                 {
                     position.Y -=1;
 
                 }
                 for(int i =1; i<playerSizeY; i++)
                 {
-                    if (CollisionY(new Vector2(position.X, position.Y - scrollHeight(decal)), 0, i) || IsElementOf(this.position, plat.position))
+                    if (CollisionY(new Vector2(position.X, position.Y - scrollHeight(decal)), 0, i) && IsElementOf(this.position, platVarray))
                     {
                         position.Y -= playerSizeY + i;
                     }
                 }
 
+            }
+            for (int i = 0; i < platarray.Length; i++)
+            {
+                PlatformX plat = platarray[i];
+                if (IsElementOf(new Vector2(this.position.X, this.position.Y + 1), plat.position))
+                {
+                    int direction = plat.direction;
+                    if (direction == 1)
+                    {
+                        position.X += 1;
+                    }
+
+                    if (direction == 0)
+                    {
+                        position.X -= 1;
+                    }
+                }
             }
 
 
@@ -143,6 +192,10 @@ namespace Clockwork
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, Color.White);
+        }
+        public void DrawMessage(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Message, new Vector2(170, 300), Color.White);
         }
     }
 }

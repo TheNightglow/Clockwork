@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Basics.cs" />
     <Compile Include="Decal.cs" />
+    <Compile Include="Enemys.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="PlatformX.cs" />
     <Compile Include="Player.cs" />
@@ -69,6 +70,7 @@
     <None Include="bin\Debug\front.png" />
     <None Include="bin\Debug\NBP.png" />
     <None Include="bin\Debug\BPD.png" />
+    <None Include="bin\Debug\BPD2.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -36,7 +36,7 @@ namespace Clockwork
         public Vector2 position;
         public int SizeX = 106;
         public int SizeY = 22;
-        private int direction;
+        public int direction;
         public Vector2 spawn;
 
         //Constructor
@@ -60,42 +60,43 @@ namespace Clockwork
         {
             Vector2 scrollPos = new Vector2(position.X, position.Y - scrollHeight(decal));
             //Camera Position relation to Object
-
-            if (CollisionX(scrollPos, 1, SizeX) == false && direction == 1)
+            if (position.Y < MapsizeY - 5)
             {
-                position.X += 1;
-            }
-
-
-            if (CollisionX(scrollPos, 1, SizeX))
-            {
-                direction = 0;
-            }
-
-            if (CollisionX(scrollPos, -1, SizeX) == false && direction == 0)
-            {
-                position.X -= 1; // hab ich hinzugefügt
-            }
-
-            if (CollisionX(scrollPos, -1, SizeX))
-            {
-                direction = 1;
-            }
-
-            
-            if (play.position.Y < 400)
-            {
-                //camera scroll
-                
-                KeyboardState key = Keyboard.GetState();
-                if (key.IsKeyDown(Keys.Space))
+                if (CollisionX(scrollPos, 1, SizeX) == false && direction == 1)
                 {
-                    float diff = 400 - play.position.Y;
-                    position.Y += 1.95f*diff;
+                    position.X += 1;
                 }
+
+
+                if (CollisionX(scrollPos, 1, SizeX))
+                {
+                    direction = 0;
+                }
+
+                if (CollisionX(scrollPos, -1, SizeX) == false && direction == 0)
+                {
+                    position.X -= 1; // hab ich hinzugefügt
+                }
+
+                if (CollisionX(scrollPos, -1, SizeX))
+                {
+                    direction = 1;
+                }
+
+
+                if (play.position.Y < 400)
+                {
+                    //camera scroll
+
+                    KeyboardState key = Keyboard.GetState();
+                    if (key.IsKeyDown(Keys.Space))
+                    {
+                        float diff = 400 - play.position.Y;
+                        position.Y += 1.95f * diff;
+                    }
+                }
+
             }
-
-
             }
         public void Draw(SpriteBatch spriteBatch)
         {

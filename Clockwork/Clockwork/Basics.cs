@@ -14,7 +14,7 @@ namespace Clockwork
     {
         public int MapsizeX = 500;
         public int MapsizeY = 800;
-        Bitmap blueprint = new Bitmap(Clockwork.Properties.Resources.BPD);
+        public Bitmap blueprint = new Bitmap(Clockwork.Properties.Resources.BPD2);
         public bool CollisionY(Vector2 location, int direct, int SizeY) //positiv direct for downwards movement, negative for upwards!
         {
             if (direct > 0)
@@ -57,9 +57,9 @@ namespace Clockwork
         // Vergleicht ob Spieler auf Platform fällt
         public bool IsElementOf(Vector2 player, Vector2 plat)
         {
-            if((player.Y+60)>plat.Y-2 && (player.Y+60) < plat.Y + 2)
+            if((player.Y+58)>plat.Y-5 && (player.Y+60) < plat.Y + 5)
             {
-                if (player.X >= plat.X && player.X < plat.Y + 106)
+                if (player.X+25 >= plat.X && player.X < plat.X + 106 - 25)
                 {
                     return true;
                 }
@@ -67,6 +67,32 @@ namespace Clockwork
             //if(pos.Y>348 && pos.Y<352) return true;
             return false;
         }
-        
+
+        public bool IsElementOf(Vector2 player, Vector2[] platarray)
+        {
+  //          int i = 0;
+  //          int count = 0;
+            for (int i = 0; i < platarray.Length; i++)
+ //           do
+            {
+   //             if (count == 1) break;
+   //             i++;
+                Vector2 plat = platarray[i];
+                if ((player.Y + 58) > plat.Y - 5 && (player.Y + 60) < plat.Y + 5)
+                {
+                    if (player.X + 25 >= plat.X && player.X < plat.X + 106 - 25)
+                    {
+     //                   count = 1;
+                        return true;
+                    }
+                }
+            }
+  //          while (i < platarray.Length-1);
+  //          if (count ==0)
+            return false;
+    //        return true;
+
+        }
+
     }
 }

@@ -15,12 +15,23 @@ namespace Clockwork
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public int playerSizeX = 60;
+        public int playerSizeY = 70;
+
         public Texture2D background;
+
+        public Texture2D Message;
+        public Texture2D Empty;
+        public Texture2D Death;
+        public Texture2D Win;
+
         public Vector2 backV = Vector2.Zero;
         public Vector2 frontV = Vector2.Zero;
         Decal backD;
         Decal backD2;
         PlatformX p;
+        PlatformX p2;
+        PlatformX[] parray;
         public Texture2D foreground;
         //     Bitmap blueprint = new Bitmap(@"C:\Users\Marcu\Desktop\Clockwork\Clockwork\Clockwork\Clockwork\bin\Blueprint.png");
 
@@ -29,6 +40,7 @@ namespace Clockwork
 
         //Class Member
         Player player;
+        Enemys e1;
         public Vector2 start = new Vector2(20, 700);
         public Vector2 fore = new Vector2(0, 0);
 
@@ -65,13 +77,19 @@ namespace Clockwork
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = this.Content.Load<Texture2D>("DoubleMap");
+            background = this.Content.Load<Texture2D>("DoubleMap2");
             foreground = this.Content.Load<Texture2D>("front");
+            Empty = this.Content.Load<Texture2D>("empty");
+            Death = this.Content.Load<Texture2D>("DMes");
+            Win = this.Content.Load<Texture2D>("Win");
+            Message = Death;
 
 
-
-            player = new Player(Content.Load<Texture2D>("player"), start);
+            player = new Player(Content.Load<Texture2D>("player"), start, Empty, Death, Win);
+            e1 = new Enemys(Content.Load<Texture2D>("player"), new Vector2(213, 1013-800-playerSizeY), playerSizeX, playerSizeY);
             p = new PlatformX(Content.Load<Texture2D>("Platform"), new Vector2(100,355));
+            p2 = new PlatformX(Content.Load<Texture2D>("Platform"), new Vector2(100, 550));
+            parray   = new PlatformX[] { p2, p};
             //backD = new Decal(background, Vector2.Zero);
             backD = new Decal(background, new Vector2(0, 0 - MapsizeY));
             backD2 = new Decal(background, new Vector2(0,0-MapsizeY));
@@ -105,16 +123,18 @@ namespace Clockwork
 
             if (player.position.Y >= 400)
             {
-                player.Update(backD, p);
+                player.Update(backD, parray, e1);
             }
             else
             {
-                player.Update(backD, p);
+                player.Update(backD, parray, e1);
                 backD.Update(player);
                 backD2.Update(player);
             }
 
             p.Update(backD, player);
+            p2.Update(backD, player);
+            e1.Update(p, player, backD);
 
 
 
@@ -137,9 +157,11 @@ namespace Clockwork
             backD2.Draw(spriteBatch);
             backD.Draw(spriteBatch);
             p.Draw(spriteBatch);
+            p2.Draw(spriteBatch);
             player.Draw(spriteBatch);
-
+            e1.Draw(spriteBatch);
             spriteBatch.Draw(foreground, frontV);
+            player.DrawMessage(spriteBatch);
 
 
             spriteBatch.End();
